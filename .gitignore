@@ -1,0 +1,19 @@
+# Arquivos de Build e Compilação (NUNCA ENVIE ISSO)
+build/
+.gradle/
+bin/
+
+# Pasta de execução do jogo (Logs e saves de teste)
+run/
+
+# Arquivos da IDE (IntelliJ/Eclipse/VSCode)
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
