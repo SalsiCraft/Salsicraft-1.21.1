@@ -24,4 +24,75 @@ Use os seguintes comandos Gradle:
 
 ---
 
-Para mais informações, consulte a [documentação oficial do Fabric](https://docs.fabricmc.net/1.21.1/develop/getting-started/launching-the-game).
+## Boas Práticas de Desenvolvimento
+
+### 1. Nomeação de Arquivos e Referências
+
+Mantenha um padrão consistente para nomes de arquivos de items:
+
+- **Padrão:** `[item_name]_[estado]`
+  - Exemplos: `etherite_raw.json`, `etherite_fragment.png`, `shalecite_fragment.json`
+  - O nome do item vem **primeiro**, seguido do seu possível estado (raw, fragment, polished, etc.)
+
+### 2. Estrutura de Diretórios
+
+Organize os assets e código-fonte de forma lógica:
+
+```
+src/
+├── main/
+│   ├── java/net/salsicraft/salsicraft/
+│   │   ├── item/          # Definições de items
+│   │   ├── block/         # Definições de blocos
+│   │   └── util/          # Utilitários
+│   └── resources/
+│       └── assets/salsicraft/
+│           ├── models/item/    # Modelos JSON de items
+│           ├── textures/item/  # Texturas PNG de items
+│           └── lang/           # Arquivos de tradução
+```
+
+### 3. Registro de Items
+
+Mantenha todos os items em um arquivo centralizado (`SalsicraftItems.java`):
+
+- Use constantes com nomes em **UPPER_SNAKE_CASE**
+- Registre os items com nomes em **lowercase com underscore**
+- Exemplo: `public static final Item ETHERITE_RAW = registerItem("etherite_raw", ...)`
+
+### 4. Arquivos de Modelo (JSON)
+
+Estrutura padrão para arquivos de modelo:
+
+```json
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "salsicraft:item/[item_name]_[estado]"
+  }
+}
+```
+
+- A referência de textura deve corresponder ao nome do arquivo PNG
+- Use caminhos relativos com o namespace do mod (`salsicraft:`)
+
+### 5. Tradução (en_us.json)
+
+Mantenha as chaves de tradução consistentes com os nomes dos items:
+
+- **Padrão de chave:** `item.salsicraft.[item_name]_[estado]`
+- **Exemplo:** `"item.salsicraft.etherite_raw": "Raw Etherite"`
+
+### 6. Checklist para Novo Item
+
+Ao adicionar um novo item, certifique-se de:
+
+- [ ] Registrar a constante em `SalsicraftItems.java`
+- [ ] Criar arquivo de modelo (`models/item/[item_name]_[estado].json`)
+- [ ] Adicionar textura (`textures/item/[item_name]_[estado].png`)
+- [ ] Adicionar tradução em `lang/en_us.json`
+- [ ] Testar visualmente no jogo com `./gradlew runClient`
+
+---
+
+Para mais informações, consulte a [documentação oficial do Fabric](https://docs.fabricmc.net/1.21.1/develop/getting-started/).
