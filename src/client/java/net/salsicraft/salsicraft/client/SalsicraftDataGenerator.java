@@ -1,12 +1,12 @@
-// package net.salsicraft.salsicraft.client;
+ package net.salsicraft.salsicraft.client;
 
-// import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-// import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
-// public class SalsicraftDataGenerator implements DataGeneratorEntrypoint {
+ public class SalsicraftDataGenerator implements DataGeneratorEntrypoint {
 
-//     @Override
-//     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-//         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-//     }
-// }
+     @Override
+     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+     }
+ }
