@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.salsicraft.Salsicraft;
+import net.salsicraft.SalsicraftItemGroup;
 
 public class EtheriteOre {
     
@@ -45,8 +46,9 @@ public class EtheriteOre {
     public static void initialize() {
         Salsicraft.LOGGER.info("Registrando blocos de Etherite");
         
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
+        ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY).register(entries -> {
             entries.add(ETHERITE_BLOCK);
+            entries.add(ETHERITE_ORE_BLOCK);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {

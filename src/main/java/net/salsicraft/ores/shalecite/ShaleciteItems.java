@@ -2,11 +2,11 @@ package net.salsicraft.ores.shalecite;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.salsicraft.Salsicraft;
+import net.salsicraft.SalsicraftItemGroup;
 
 public class ShaleciteItems {
     
@@ -27,7 +27,7 @@ public class ShaleciteItems {
     public static void initialize() {
         Salsicraft.LOGGER.info("Registrando itens de Shalecite");
         
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
+        ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY).register(entries -> {
             entries.add(SHALECITE_ORE);
             entries.add(SHALECITE_FRAGMENT);
         });

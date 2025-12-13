@@ -10,6 +10,8 @@ public class SalsicraftRegistry {
     public static void initialize() {
         Salsicraft.LOGGER.info("Inicializando registros do Salsicraft");
         
+        SalsicraftItemGroup.initialize();
+        
         EtheriteItems.initialize();
         EtheriteOre.initialize();
         

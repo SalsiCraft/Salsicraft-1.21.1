@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.salsicraft.Salsicraft;
+import net.salsicraft.SalsicraftItemGroup;
 
 public class ShaleciteOre {
     
@@ -45,7 +46,8 @@ public class ShaleciteOre {
     public static void initialize() {
         Salsicraft.LOGGER.info("Registrando blocos de Shalecite");
         
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {
+        ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY).register(entries -> {
+            entries.add(SHALECITE_BLOCK);
             entries.add(SHALECITE_ORE_BLOCK);
         });
 
