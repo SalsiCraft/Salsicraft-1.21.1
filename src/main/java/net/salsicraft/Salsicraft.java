@@ -1,8 +1,6 @@
-package net.salsicraft.salsicraft;
+package net.salsicraft;
 
 import net.fabricmc.api.ModInitializer;
-import net.salsicraft.salsicraft.block.SalsicraftBlocks;
-import net.salsicraft.salsicraft.item.SalsicraftItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +10,6 @@ public class Salsicraft implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        SalsicraftItems.registerSalsicraftItems();
-        SalsicraftBlocks.registerSalsicraftBlocks();
+        SalsicraftRegistry.initialize();
     }
 }

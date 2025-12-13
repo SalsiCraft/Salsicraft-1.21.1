@@ -17,7 +17,7 @@
       "net.salsicraft.salsicraft.client.SalsicraftClient"
     ],
     "main": [
-      "net.salsicraft.salsicraft.Salsicraft"
+      "net.salsicraft.Salsicraft"
     ]
   },
   "mixins": [
