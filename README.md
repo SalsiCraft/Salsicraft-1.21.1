@@ -11,6 +11,10 @@ O Fabric Loom já vem com perfis de execução prontos. No canto superior direit
 
 Ambos podem ser executados em modo normal ou debug. Para debugar, basta selecionar o perfil desejado e clicar no ícone de debug.
 
+
+**Nota**: Rodar dentro do gradle o `genSources` antes de rodar o jogo.
+
+
 ## Rodando pelo Terminal (VSCode ou outros)
 
 Use os seguintes comandos Gradle:
