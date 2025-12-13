@@ -81,6 +81,37 @@ net/salsicraft/
 └── SalsicraftRegistry.java  # Coordenador central
 ```
 
+### ItemGroup Customizado
+
+O projeto possui uma aba customizada no menu criativo chamada **Salsicraft**, onde todos os itens e blocos do mod aparecem organizados.
+
+**Localização:** `SalsicraftItemGroup.java`
+
+```java
+public class SalsicraftItemGroup {
+    // RegistryKey usado para auto-registro por módulos
+    public static final RegistryKey<ItemGroup> SALSICRAFT_KEY = RegistryKey.of(
+        RegistryKeys.ITEM_GROUP,
+        Identifier.of(Salsicraft.MOD_ID, "salsicraft")
+    );
+    
+    // ItemGroup registrado (vazio inicialmente)
+    public static final ItemGroup SALSICRAFT_GROUP = Registry.register(
+        Registries.ITEM_GROUP,
+        SALSICRAFT_KEY,
+        FabricItemGroup.builder()
+            .icon(() -> new ItemStack(Items.DIAMOND))
+            .displayName(Text.translatable("itemGroup.salsicraft"))
+            .build()
+    );
+}
+```
+
+**Arquitetura Descentralizada:**
+- O ItemGroup é criado **vazio** no `SalsicraftItemGroup`
+- Cada módulo se **auto-registra** usando `ItemGroupEvents.modifyEntriesEvent()`
+- Evita conflitos de merge - cada desenvolvedor edita apenas seu módulo
+
 ### Como Adicionar um Novo Minério
 
 **Passo 1:** Crie uma nova pasta em `ores/`
@@ -89,24 +120,47 @@ ores/
 └── crimsonite/
 ```
 
-**Passo 2:** Crie as classes de registro
+**Passo 2:** Crie as classes de registro com auto-registro no ItemGroup
+
 ```java
 // CrimsoniteOre.java
 package net.salsicraft.ores.crimsonite;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Block;
 import net.salsicraft.Salsicraft;
+import net.salsicraft.SalsicraftItemGroup;
 
 public class CrimsoniteOre {
     public static final Block CRIMSONITE_BLOCK = register("crimsonite_block", ...);
+    public static final Block CRIMSONITE_ORE_BLOCK = register("crimsonite_ore_block", ...);
     
     private static Block register(String name, Block block) {
-        // Lógica de registro
+        // Registra o bloco
+        Block registeredBlock = Registry.register(
+            Registries.BLOCK, 
+            Identifier.of(Salsicraft.MOD_ID, name), 
+            block
+        );
+        
+        // Registra o BlockItem correspondente
+        Registry.register(
+            Registries.ITEM, 
+            Identifier.of(Salsicraft.MOD_ID, name),
+            new BlockItem(registeredBlock, new Item.Settings())
+        );
+        
+        return registeredBlock;
     }
     
     public static void initialize() {
         Salsicraft.LOGGER.info("Registrando blocos de Crimsonite");
-        // Adicionar aos grupos criativos
+        
+        // AUTO-REGISTRO no ItemGroup customizado
+        ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY).register(entries -> {
+            entries.add(CRIMSONITE_BLOCK);
+            entries.add(CRIMSONITE_ORE_BLOCK);
+        });
     }
 }
 ```
@@ -115,17 +169,30 @@ public class CrimsoniteOre {
 // CrimsoniteItems.java
 package net.salsicraft.ores.crimsonite;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
+import net.salsicraft.SalsicraftItemGroup;
 
 public class CrimsoniteItems {
     public static final Item CRIMSONITE_ORE = register("crimsonite_ore", ...);
+    public static final Item CRIMSONITE_FRAGMENT = register("crimsonite_fragment", ...);
     
     private static Item register(String name, Item item) {
-        // Lógica de registro
+        return Registry.register(
+            Registries.ITEM, 
+            Identifier.of(Salsicraft.MOD_ID, name), 
+            item
+        );
     }
     
     public static void initialize() {
-        // Adicionar aos grupos criativos
+        Salsicraft.LOGGER.info("Registrando itens de Crimsonite");
+        
+        // AUTO-REGISTRO no ItemGroup customizado
+        ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY).register(entries -> {
+            entries.add(CRIMSONITE_ORE);
+            entries.add(CRIMSONITE_FRAGMENT);
+        });
     }
 }
 ```
@@ -133,6 +200,10 @@ public class CrimsoniteItems {
 **Passo 3:** Registre no `SalsicraftRegistry.java`
 ```java
 public static void initialize() {
+    Salsicraft.LOGGER.info("Inicializando registros do Salsicraft");
+    
+    SalsicraftItemGroup.initialize();  // Registra o ItemGroup primeiro
+    
     // ... outros registros
     
     CrimsoniteItems.initialize();
@@ -143,10 +214,11 @@ public static void initialize() {
 ### Vantagens da Arquitetura
 
 ✅ **Zero conflitos de merge**: Cada desenvolvedor trabalha em sua pasta de minério  
-✅ **Auto-registro**: Blocos/itens se registram automaticamente quando a classe carrega  
+✅ **Auto-registro descentralizado**: Módulos registram seus próprios itens no ItemGroup  
 ✅ **Modular**: Fácil adicionar novos conteúdos sem modificar código existente  
 ✅ **Organizado**: Código relacionado fica junto (blocos + itens do mesmo minério)  
-✅ **Escalável**: Suporta crescimento do mod sem refatorações complexas
+✅ **Escalável**: Suporta crescimento do mod sem refatorações complexas  
+✅ **Aba customizada**: Todos os itens/blocos aparecem na aba "Salsicraft" no menu criativo
 
 ### Boas Práticas de Desenvolvimento
 
@@ -155,10 +227,12 @@ public static void initialize() {
 - Apenas uma linha é adicionada no `SalsicraftRegistry.java` (mínimo conflito)
 - Use ordem alfabética no registry para facilitar merges
 - Commit frequente de módulos completos
+- Cada módulo se auto-registra no ItemGroup - **sem editar classes centrais**
 
 **Para novos tipos de conteúdo:**
 - Crie novos módulos fora de `ores/` (ex: `machines/`, `farming/`)
 - Mantenha a mesma estrutura de auto-registro
+- Use `ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY)` para adicionar ao grupo
 - Adicione no `SalsicraftRegistry.java` com comentários claros
 
 ---
@@ -214,12 +288,15 @@ Mantenha as chaves de tradução consistentes com os nomes dos items:
 
 Ao adicionar um novo item ou bloco:
 
-- [ ] Adicionar constante na classe do módulo apropriado
+- [ ] Criar pasta do módulo em `ores/` (se for novo módulo)
+- [ ] Adicionar constante na classe do módulo apropriado (`*Items.java` ou `*Ore.java`)
+- [ ] Adicionar auto-registro no método `initialize()` usando `ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY)`
 - [ ] Criar arquivo de modelo (`models/item/[nome].json` ou `models/block/[nome].json`)
 - [ ] Adicionar textura (`textures/item/[nome].png` ou `textures/block/[nome].png`)
 - [ ] Adicionar tradução em `lang/en_us.json`
 - [ ] Registrar módulo em `SalsicraftRegistry.java` (se for novo módulo)
 - [ ] Testar visualmente no jogo com `./gradlew runClient`
+- [ ] Verificar se o item aparece na aba "Salsicraft" do menu criativo
 
 ---
 
