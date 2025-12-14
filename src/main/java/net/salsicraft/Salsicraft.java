@@ -1,6 +1,7 @@
 package net.salsicraft;
 
 import net.fabricmc.api.ModInitializer;
+import net.salsicraft.word.gen.SalsicraftWorldGeneration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +11,7 @@ public class Salsicraft implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        SalsicraftWorldGeneration.generateModWorldGen();
         SalsicraftRegistry.initialize();
     }
 }
