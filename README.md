@@ -28,6 +28,88 @@ Use os seguintes comandos Gradle:
 
 ---
 
+## Datagen - Geração Automática de Dados
+
+O projeto utiliza o **Fabric Data Generation API** para gerar automaticamente arquivos JSON de configuração, evitando a criação manual e reduzindo erros.
+
+### O que é Datagen?
+
+Datagen é uma ferramenta que gera automaticamente arquivos de dados do Minecraft (JSON) a partir de código Java. Isso inclui:
+
+- **Modelos de itens e blocos** - Arquivos JSON em `models/item/` e `models/block/`
+- **Block states** - Arquivos de estado de blocos em `blockstates/`
+- **Loot tables** - Tabelas de drop de blocos em `data/salsicraft/loot_table/blocks/`
+- **Tags** - Tags de mineração e ferramentas necessárias em `data/minecraft/tags/`
+- **Receitas** - Receitas de crafting e smelting (quando configurado)
+
+### Por que usar Datagen?
+
+✅ **Consistência**: Reduz erros de digitação e formatação  
+✅ **Produtividade**: Gera múltiplos arquivos automaticamente  
+✅ **Manutenção**: Mudanças em código refletem automaticamente nos JSONs  
+✅ **Validação**: Erros são detectados em tempo de compilação  
+✅ **Versionamento**: Mais fácil fazer merges e revisar mudanças
+
+### Como Usar o Datagen
+
+Para gerar todos os arquivos de dados do mod, execute:
+
+```bash
+./gradlew runDatagen
+```
+
+Os arquivos gerados aparecerão em `src/main/generated/` e devem ser commitados no repositório.
+
+### Estrutura do Datagen
+
+A configuração do datagen está em `src/client/java/net/salsicraft/`:
+
+```
+client/
+├── SalsicraftDataGenerator.java       # Ponto de entrada do datagen
+└── datagen/
+    ├── SalsicraftModelProvider.java       # Gera modelos de itens/blocos
+    ├── SalsicraftBlockTagProvider.java    # Gera tags de blocos (mineração)
+    ├── SalsicraftLootTableProvider.java   # Gera loot tables (drops)
+    ├── SalsicraftItemTagProvider.java     # Gera tags de itens
+    └── SalsicraftRecipeProvider.java      # Gera receitas (crafting/smelting)
+```
+
+### Adicionando Novos Itens/Blocos ao Datagen
+
+Quando criar um novo item ou bloco, adicione-o aos providers correspondentes:
+
+**1. Modelos (SalsicraftModelProvider.java):**
+```java
+// Para itens simples
+itemModelGenerator.register(SeuModulo.SEU_ITEM, Models.GENERATED);
+
+// Para blocos simples
+blockStateModelGenerator.registerSimpleCubeAll(SeuModulo.SEU_BLOCO);
+```
+
+**2. Tags de Blocos (SalsicraftBlockTagProvider.java):**
+```java
+getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
+    .add(SeuModulo.SEU_BLOCO);
+
+getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
+    .add(SeuModulo.SEU_BLOCO);
+```
+
+**3. Loot Tables (SalsicraftLootTableProvider.java):**
+```java
+// Bloco que dropa ele mesmo
+addDrop(SeuModulo.SEU_BLOCO);
+
+// Minério que dropa fragmentos (1-3 itens)
+addDrop(SeuModulo.SEU_MINERIO, multipleOreDrops(SeuModulo.SEU_MINERIO, SeuModulo.SEU_FRAGMENTO, 1, 3));
+```
+
+Após adicionar, execute `./gradlew runDatagen` para gerar os arquivos.
+
+---
+
 ## Boas Práticas de Desenvolvimento
 
 ### 1. Nomeação de Arquivos e Referências
@@ -291,7 +373,11 @@ Ao adicionar um novo item ou bloco:
 - [ ] Criar pasta do módulo em `ores/` (se for novo módulo)
 - [ ] Adicionar constante na classe do módulo apropriado (`*Items.java` ou `*Ore.java`)
 - [ ] Adicionar auto-registro no método `initialize()` usando `ItemGroupEvents.modifyEntriesEvent(SalsicraftItemGroup.SALSICRAFT_KEY)`
-- [ ] Criar arquivo de modelo (`models/item/[nome].json` ou `models/block/[nome].json`)
+- [ ] **Configurar datagen:**
+  - [ ] Adicionar ao `SalsicraftModelProvider` (modelos de item/bloco)
+  - [ ] Adicionar ao `SalsicraftBlockTagProvider` (tags de mineração, se for bloco)
+  - [ ] Adicionar ao `SalsicraftLootTableProvider` (drops, se for bloco)
+- [ ] **Executar datagen:** `./gradlew runDatagen`
 - [ ] Adicionar textura (`textures/item/[nome].png` ou `textures/block/[nome].png`)
 - [ ] Adicionar tradução em `lang/en_us.json`
 - [ ] Registrar módulo em `SalsicraftRegistry.java` (se for novo módulo)
