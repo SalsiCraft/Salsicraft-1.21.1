@@ -11,10 +11,10 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "net.salsicraft.salsicraft.client.SalsicraftDataGenerator"
+      "net.salsicraft.client.SalsicraftDataGenerator"
     ],
     "client": [
-      "net.salsicraft.salsicraft.client.SalsicraftClient"
+      "net.salsicraft.client.SalsicraftClient"
     ],
     "main": [
       "net.salsicraft.Salsicraft"
