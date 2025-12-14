@@ -1,9 +1,0 @@
-{
-    "replace": false,
-    "values": [
-        "salsicraft:etherite_block",
-        "salsicraft:etherite_ore_block",
-        "salsicraft:shalecite_ore_block",
-        "salsicraft:shalecite_block"
-    ]
-}
