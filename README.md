@@ -385,5 +385,10 @@ Ao adicionar um novo item ou bloco:
 - [ ] Verificar se o item aparece na aba "Salsicraft" do menu criativo
 
 ---
+### Comandos úteis do minecraft para debugar
+- `/effect give Player937 minecraft:night_vision infinite 2` - visão noturna infinita
+- `/execute in minecraft:the_end run tp @s 0 100 0` - teleporta para o End
+- `F3 + F4` - abre a seleção de modo (criativo, sobrevivência, etc)
 
+---
 Para mais informações, consulte a [documentação oficial do Fabric](https://docs.fabricmc.net/1.21.1/develop/getting-started/).
