@@ -1,9 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.salsicraft.salsicraft.mixin.client",
+  "package": "net.salsicraft.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ItemRendererMixin",
+    "ModelLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
