@@ -4,8 +4,6 @@
   "package": "net.salsicraft.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ItemRendererMixin",
-    "ModelLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

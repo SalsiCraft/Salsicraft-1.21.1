@@ -2,7 +2,6 @@ package net.salsicraft.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.salsicraft.Salsicraft;
-import net.salsicraft.ores.etherite.EtheriteItems;
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -32,9 +31,6 @@ public abstract class ItemRendererMixin {
             argsOnly = true
     )
     public BakedModel renderItem(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) ModelTransformationMode renderMode) {
-        if (stack.getItem() == EtheriteItems.ETHERITE_FRAGMENT && (renderMode == ModelTransformationMode.GUI || renderMode == ModelTransformationMode.FIXED)) {
-            return getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of(Salsicraft.MOD_ID, "etherite_fragment")));
-        }
 
         return bakedModel;
     }
@@ -45,9 +41,6 @@ public abstract class ItemRendererMixin {
             ordinal = 1
     )
     public BakedModel getHeldItemModelMixin(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack) {
-        if (stack.getItem() == EtheriteItems.ETHERITE_FRAGMENT) {
-            return this.models.getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of(Salsicraft.MOD_ID, "etherite_fragment_3d")));
-        }
 
         return bakedModel;
     }
