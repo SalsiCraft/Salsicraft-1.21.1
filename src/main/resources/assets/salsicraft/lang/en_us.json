@@ -1,0 +1,13 @@
+{
+  "itemGroup.salsicraft": "Salsicraft",
+  
+  "item.salsicraft.etherite_ore": "Etherite Ore",
+  "item.salsicraft.etherite_fragment": "Etherite Fragment",
+  "item.salsicraft.shalecite_ore": "Shalecite Ore",
+  "item.salsicraft.shalecite_fragment": "Shalecite Fragment",
+  
+  "block.salsicraft.etherite_block": "Etherite Block",
+  "block.salsicraft.etherite_ore_block": "Etherite Ore Block",
+  "block.salsicraft.shalecite_block": "Shalecite Block",
+  "block.salsicraft.shalecite_ore_block": "Shalecite Ore Block"
+}
