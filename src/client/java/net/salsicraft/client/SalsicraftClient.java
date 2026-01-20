@@ -1,4 +1,4 @@
-package net.salsicraft.salsicraft.client;
+package net.salsicraft.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

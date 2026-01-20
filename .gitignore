@@ -2,6 +2,7 @@
 build/
 .gradle/
 bin/
+.cache/
 
 # Pasta de execução do jogo (Logs e saves de teste)
 run/
